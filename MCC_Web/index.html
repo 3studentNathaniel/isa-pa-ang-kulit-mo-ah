@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manila Cordage Company</title>
+<link rel="icon" type="image/png" sizes="32x32" href="images/Favicon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/Favicon.png">
+<!-- Google Fonts removed for offline use; system font fallbacks applied below -->
+<style>
+  :root {
+    --navy: #0B2545;
+    --blue: #1A5276;
+    --mid-blue: #2E86C1;
+    --sky: #5DADE2;
+    --white: #FFFFFF;
+    --off-white: #F4F7FA;
+    --light-grey: #E8EDF2;
+    --mid-grey: #9EABB5;
+    --dark-grey: #3D4F5C;
+    --rope-tan: #C8A96E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', 'Segoe UI', Arial, sans-serif;
+    background: var(--white);
+    color: var(--navy);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgb(255, 255, 255);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(93,173,226,0.2);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    height: 70px;
+    transition: all 0.3s;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px; text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--mid-blue), var(--sky));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .nav-logo-text { color: var(--white); }
+  .nav-logo-text span { display: block; }
+  .nav-logo-text .brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 1px; }
+  .nav-logo-text .sub { font-size: 10px; color: var(--sky); letter-spacing: 2px; text-transform: uppercase; }
+
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: rgba(0, 0, 0, 0.8); text-decoration: none;
+    font-size: 15px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;
+    position: relative; padding-bottom: 4px;
+    transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px; background: var(--sky);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--mid-blue); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: pointer;
+    background: none; border: none; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--white); border-radius: 2px; transition: all 0.3s;
+  }
+
+  .mobile-menu {
+    display: none; position: fixed; top: 70px; left: 0; right: 0;
+    background: rgba(11,37,69,0.98); z-index: 999;
+    padding: 24px 5%; border-bottom: 1px solid rgba(93,173,226,0.2);
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 0; }
+  .mobile-menu a {
+    display: block; color: rgba(255,255,255,0.85); text-decoration: none;
+    font-size: 15px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+    padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--sky); }
+
+  /* ── HERO ── */
+  #home {
+    min-height: 100vh;
+    background: linear-gradient(160deg, var(--navy) 0%, var(--blue) 55%, #0D3B6E 100%);
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding-top: 70px;
+  }
+  .hero-pattern {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 1px, transparent 0, transparent 50%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 1px, transparent 0, transparent 50%);
+    background-size: 60px 60px;
+  }
+  .hero-rope-bg {
+    position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
+    width: 520px; height: 520px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(93,173,226,0.08) 0%, transparent 70%);
+    border: 1px solid rgba(93,173,226,0.12);
+  }
+  .hero-rope-bg::before {
+    content: ''; position: absolute; inset: 40px; border-radius: 50%;
+    border: 1px solid rgba(93,173,226,0.08);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 60px 5% 80px;
+    max-width: 680px;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(93,173,226,0.12); border: 1px solid rgba(93,173,226,0.3);
+    color: var(--sky); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 2px; margin-bottom: 28px;
+    font-weight: 600;
+  }
+  .hero-tag::before { content: '—'; }
+  .hero-h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 6vw, 76px);
+    font-weight: 900; line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .hero-h1 em { font-style: normal; color: var(--sky); }
+  .hero-sub {
+    color: rgba(255,255,255,0.65); font-size: clamp(15px, 1.6vw, 17px);
+    line-height: 1.7; max-width: 520px; margin-bottom: 44px;
+    font-weight: 300;
+  }
+  .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--mid-blue), var(--sky));
+    color: var(--white); text-decoration: none;
+    padding: 14px 32px; font-size: 13px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    border-radius: 3px; transition: all 0.3s;
+    box-shadow: 0 8px 24px rgba(46,134,193,0.35);
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(46,134,193,0.5); }
+  .btn-outline {
+    background: transparent;
+    color: rgba(255,255,255,0.8); text-decoration: none;
+    padding: 14px 32px; font-size: 13px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    border-radius: 3px; transition: all 0.3s;
+    border: 1px solid rgba(255,255,255,0.25); cursor: pointer;
+  }
+  .btn-outline:hover { border-color: var(--sky); color: var(--sky); }
+
+  .hero-stats {
+    position: absolute; bottom: 48px; left: 5%; right: 5%;
+    display: flex; gap: 40px; flex-wrap: wrap; z-index: 2;
+  }
+  .stat-item { border-left: 2px solid var(--sky); padding-left: 16px; }
+  .stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 32px; font-weight: 700; color: var(--white); line-height: 1;
+  }
+  .stat-label { font-size: 11px; color: var(--mid-grey); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; }
+
+  /* ── SECTION SHARED ── */
+  section { padding: 100px 5%; }
+  .section-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--mid-blue); font-weight: 600; margin-bottom: 12px;
+  }
+  .section-h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 4vw, 48px); font-weight: 700; line-height: 1.15;
+    color: var(--navy); margin-bottom: 16px;
+  }
+  .section-h2 em { font-style: normal; color: var(--mid-blue); }
+  .section-lead {
+    color: var(--dark-grey); font-size: 16px; line-height: 1.7;
+    max-width: 560px; font-weight: 300;
+  }
+  .divider {
+    width: 48px; height: 3px;
+    background: linear-gradient(90deg, var(--mid-blue), var(--sky));
+    margin: 20px 0 40px; border-radius: 2px;
+  }
+
+  /* ── PRODUCTS ── */
+  #products { background: var(--off-white); }
+  .products-header { max-width: 600px; margin-bottom: 56px; }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .product-card {
+    background: var(--white);
+    border-radius: 6px; overflow: hidden;
+    border: 1px solid var(--light-grey);
+    transition: all 0.35s;
+    position: relative;
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 48px rgba(11,37,69,0.12);
+    border-color: rgba(46,134,193,0.3);
+  }
+  .product-img {
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 60px;
+    position: relative; overflow: hidden;
+  }
+  .product-img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(11,37,69,0.06) 100%);
+  }
+  .product-body { padding: 24px; }
+  .product-cat {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--mid-blue); font-weight: 600; margin-bottom: 8px;
+  }
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700; color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .product-desc { font-size: 14px; color: var(--dark-grey); line-height: 1.6; font-weight: 300; }
+  .product-footer {
+    padding: 16px 24px; border-top: 1px solid var(--light-grey);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .product-specs { font-size: 12px; color: var(--mid-grey); }
+  .product-tag {
+    background: rgba(46,134,193,0.1); color: var(--mid-blue);
+    font-size: 11px; font-weight: 600; padding: 4px 10px;
+    border-radius: 2px; letter-spacing: 0.5px;
+  }
+
+  /* product card colors */
+  .pc-blue  { background: linear-gradient(135deg, #EBF5FB, #D6EAF8); }
+  .pc-navy  { background: linear-gradient(135deg, #EAF0F6, #D5E8F0); }
+  .pc-grey  { background: linear-gradient(135deg, #F2F3F4, #E5E7E9); }
+  .pc-teal  { background: linear-gradient(135deg, #E8F8F5, #D1F2EB); }
+  .pc-sky   { background: linear-gradient(135deg, #EBF5FB, #AED6F1); }
+  .pc-steel { background: linear-gradient(135deg, #EAF0F6, #BDC3C7); }
+
+  /* ── HISTORY ── */
+  #history { background: var(--white); }
+  .history-layout {
+    display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start;
+  }
+  .history-left { position: sticky; top: 100px; }
+  .history-quote {
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: var(--white); padding: 40px; border-radius: 6px;
+    margin-top: 32px; position: relative; overflow: hidden;
+  }
+  .history-quote::before {
+    content: '"'; position: absolute; top: -10px; left: 20px;
+    font-family: 'Playfair Display', serif; font-size: 120px;
+    color: rgba(93,173,226,0.15); line-height: 1;
+  }
+  .history-quote p {
+    font-style: italic; font-size: 16px; line-height: 1.7;
+    color: rgba(255,255,255,0.85); position: relative; z-index: 1;
+  }
+  .history-quote cite {
+    display: block; margin-top: 16px; font-size: 12px;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    font-style: normal; font-weight: 600;
+  }
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px;
+    width: 2px; background: linear-gradient(180deg, var(--mid-blue), var(--light-grey));
+  }
+  .timeline-item { position: relative; margin-bottom: 48px; }
+  .timeline-dot {
+    position: absolute; left: -32px; top: 6px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--mid-blue);
+    border: 3px solid var(--white);
+    box-shadow: 0 0 0 2px var(--mid-blue);
+  }
+  .timeline-year {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px; font-weight: 700; color: var(--mid-blue);
+    line-height: 1; margin-bottom: 8px;
+  }
+  .timeline-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 600; color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .timeline-text { font-size: 14px; color: var(--dark-grey); line-height: 1.7; font-weight: 300; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--off-white); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: start; }
+  .contact-info-cards { display: flex; flex-direction: column; gap: 20px; margin-top: 32px; }
+  .contact-card {
+    background: var(--white); border-radius: 6px;
+    padding: 22px 24px; border: 1px solid var(--light-grey);
+    display: flex; gap: 16px; align-items: flex-start;
+    transition: all 0.3s;
+  }
+  .contact-card:hover { border-color: rgba(46,134,193,0.4); box-shadow: 0 4px 16px rgba(11,37,69,0.06); }
+  .contact-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--mid-blue), var(--sky));
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .contact-card-label {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--mid-grey); font-weight: 600; margin-bottom: 4px;
+  }
+  .contact-card-val { font-size: 15px; color: var(--navy); font-weight: 500; line-height: 1.5; }
+  .contact-form-wrap {
+    background: var(--white); border-radius: 6px;
+    padding: 44px; border: 1px solid var(--light-grey);
+  }
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 8px;
+  }
+  .form-sub { font-size: 14px; color: var(--mid-grey); margin-bottom: 32px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { margin-bottom: 20px; }
+  label {
+    display: block; font-size: 12px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--dark-grey); margin-bottom: 8px;
+  }
+  input, select, textarea {
+    width: 100%; padding: 12px 16px;
+    border: 1.5px solid var(--light-grey); border-radius: 4px;
+    font-family: 'Barlow', sans-serif; font-size: 14px; color: var(--navy);
+    background: var(--off-white); transition: all 0.25s; outline: none;
+    resize: vertical;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--mid-blue);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(46,134,193,0.12);
+  }
+  textarea { min-height: 120px; }
+  .btn-submit {
+    width: 100%; padding: 15px;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: var(--white); border: none; border-radius: 4px;
+    font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+    transition: all 0.3s; margin-top: 8px;
+  }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(11,37,69,0.2); }
+  .form-success {
+    display: none; text-align: center; padding: 20px;
+    color: var(--mid-blue); font-weight: 600;
+  }
+  .form-success.show { display: block; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    padding: 64px 5% 40px;
+    color: rgba(255,255,255,0.6);
+  }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-brand p { font-size: 14px; line-height: 1.7; margin-top: 16px; max-width: 300px; }
+  .footer-col-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sky); font-weight: 700; margin-bottom: 20px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 28px; display: flex;
+    align-items: center; justify-content: space-between; flex-wrap: gap;
+    font-size: 13px;
+  }
+
+  /* ── PRODUCT MODAL ── */
+  .product-card { cursor: pointer; }
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 2000;
+    background: rgba(11,37,69,0.75); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--white); border-radius: 10px;
+    max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 32px 80px rgba(11,37,69,0.3);
+    animation: modalIn 0.25s ease;
+  }
+  @keyframes modalIn {
+    from { opacity:0; transform: translateY(20px) scale(0.97); }
+    to   { opacity:1; transform: translateY(0) scale(1); }
+  }
+  .modal-img {
+    height: 180px; display: flex; align-items: center; justify-content: center;
+    font-size: 72px; border-radius: 10px 10px 0 0;
+  }
+  .modal-content { padding: 32px; }
+  .modal-cat {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--mid-blue); font-weight: 600; margin-bottom: 8px;
+  }
+  .modal-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px; font-weight: 700; color: var(--navy); margin-bottom: 12px;
+  }
+  .modal-desc { font-size: 15px; color: var(--dark-grey); line-height: 1.7; margin-bottom: 24px; }
+  .modal-specs-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px;
+  }
+  .modal-spec-item {
+    background: var(--off-white); border-radius: 6px; padding: 14px 16px;
+    border: 1px solid var(--light-grey);
+  }
+  .modal-spec-label {
+    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--mid-grey); font-weight: 600; margin-bottom: 4px;
+  }
+  .modal-spec-val { font-size: 14px; color: var(--navy); font-weight: 500; }
+  .modal-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+  }
+  .modal-close {
+    background: none; border: 1.5px solid var(--light-grey); color: var(--dark-grey);
+    padding: 10px 22px; border-radius: 4px; font-size: 13px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+  }
+  .modal-close:hover { border-color: var(--mid-blue); color: var(--mid-blue); }
+  .modal-enquire {
+    background: linear-gradient(135deg, var(--mid-blue), var(--sky));
+    color: var(--white); border: none; padding: 10px 26px; border-radius: 4px;
+    font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .modal-enquire:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(46,134,193,0.4); }
+
+  /* ── FADE IN ── */
+  .fade-up { opacity: 0; transform: translateY(28px); transition: all 0.65s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .history-layout { grid-template-columns: 1fr; gap: 40px; }
+    .history-left { position: static; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px) {
+    section { padding: 72px 5%; }
+    .hero-stats { gap: 24px; bottom: 32px; }
+    .footer-top { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .form-row { grid-template-columns: 1fr; }
+    .contact-form-wrap { padding: 28px 22px; }
+    .hero-cta-group { flex-direction: column; }
+    .btn-primary, .btn-outline { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar" style="display:flex; align-items:center; justify-content:space-between; padding:2vh 5vw;">
+
+  <a class="nav-logo" href="#home">
+    <img 
+      src="images/MCC-Logos-1a (1).gif" 
+      alt="logodis" 
+      style="height:60px; width:auto;"
+    >
+  </a>
+
+  <ul class="nav-links" style="display:flex; gap:20px; list-style:none; margin:0; padding:0;">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#history">History</a></li>
+    <li><a href="#contact">Contact Us</a></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#home" onclick="closeMobile()">Home</a></li>
+    <li><a href="#products" onclick="closeMobile()">Products</a></li>
+    <li><a href="#history" onclick="closeMobile()">History</a></li>
+    <li><a href="#contact" onclick="closeMobile()">Contact Us</a></li>
+  </ul>
+</div>
+
+<!-- HOME / HERO -->
+<section id="home">
+  <div class="hero-pattern"></div>
+  <div class="hero-rope-bg"></div>
+  <div class="hero-content">
+    <h1 class="hero-h1">Strength In Every Strand</h1>
+    <p class="hero-sub">
+      Manila Cordage Company has been crafting world-class ropes, twines, and cordage products for over a century — serving marine, industrial, agricultural, and commercial markets across the Philippines and beyond.
+    </p>
+    <div class="hero-cta-group">
+      <a href="#products" class="btn-primary">Explore Products</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">100+</div>
+      <div class="stat-label">Years in Industry</div>
+    </div>
+  
+    <div class="stat-item">
+      <div class="stat-num">ISO</div>
+      <div class="stat-label">Certified Quality</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="products-header fade-up">
+    <div class="section-tag">Our Product Range</div>
+    <h2 class="section-h2">Premium <em>Ropes</em> for Every Application</h2>
+    <div class="divider"></div>
+    <p class="section-lead">From natural fiber ropes to high-tech synthetic lines, our products meet the rigorous demands of marine, agricultural, and industrial use.</p>
+  </div>
+  <div class="products-grid">
+
+    <div class="product-card fade-up">
+      <div class="product-img pc-blue">
+        <img src="images/ManilaRope.jpg" alt="Skyline Rope">
+      </div>
+      <div class="product-body">
+        <div class="product-cat">Natural Fiber</div>
+        <div class="product-name">MANILA ROPE</div>
+        <p class="product-desc">Made from genuine Abacá (Manila hemp), our flagship rope delivers exceptional tensile strength, flexibility, and natural resistance to saltwater deterioration.</p>
+      </div>
+    </div>
+
+    <div class="product-card fade-up">
+      <div class="product-img pc-navy">
+  <img src="images/Skyline.jpg" alt="Skyline Rope">
+</div>
+      <div class="product-body">
+        <div class="product-cat">Synthetic</div>
+        <div class="product-name">SKYLINE</div>
+        <p class="product-desc">Lightweight, buoyant, and UV-resistant. Ideal for marine and water rescue applications where ropes must float on the surface.                                            </p>
+      </div>
+    </div>
+
+    <div class="product-card fade-up">
+      <div class="product-img pc-grey">
+        <img src="images/Nyline-2A.jpg" alt="Nylon Rope">
+      </div>
+      <div class="product-body">
+        <div class="product-cat">Nylon</div>
+        <div class="product-name">NYLINE</div>
+        <p class="product-desc">High-stretch, shock-absorbing nylon for heavy lifting, mooring, and towing operations. Outstanding abrasion and UV resistance.</p>
+      </div>
+
+    </div>
+
+    <div class="product-card fade-up">
+      <div class="product-img pc-teal">
+        <img src="images/MCC2012-Terypro-a.jpg" alt="Terypro Rope">
+      </div>
+      <div class="product-body">
+        <div class="product-cat">Synthetic</div>
+        <div class="product-name">TERYPRO</div>
+        <p class="product-desc">Eco-friendly, biodegradable sisal twine widely used in agriculture, packaging, and horticulture. Strong, coarse, and naturally grippy.</p>
+      </div>
+    </div>
+
+    <div class="product-card fade-up">
+      <div class="product-img pc-sky">
+        <img src="images/Esterliine-2.jpg" alt="Polyester Rope">
+      </div>
+      <div class="product-body">
+        <div class="product-cat">Polyester</div>
+        <div class="product-name">ESTERLINE</div>
+        <p class="product-desc">Double-braid construction for minimal stretch and maximum strength. Perfect for yacht rigging, safety lines, and tensioning systems.</p>
+      </div>
+    </div>
+
+    <div class="product-card fade-up">
+      <div class="product-img pc-steel">
+        <img src="images/MCC2012-Ultraline-1.jpg" alt="Danline Rope">
+      </div>
+      <div class="product-body">
+        <div class="product-cat">Danline</div>
+        <div class="product-name">MEGALINE</div>
+        <p class="product-desc">UV-stabilized polypropylene twine engineered for baling machines. Consistent knot strength and uniform tension across every spool.</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+<section id="productPage" style="display:none; padding:120px 5%;">
+  
+  <button onclick="closeProductPage()" style="margin-bottom:20px;">
+    ← Back
+  </button>
+
+  <div id="fullProductContent"></div>
+
+</section>
+<!-- HISTORY -->
+<section id="history">
+  <div class="history-layout">
+    <div class="history-left fade-up">
+      <div class="section-tag">Our Story</div>
+      <h2 class="section-h2">Over a Century of <em>Craft</em> & Heritage</h2>
+      <div class="divider"></div>
+      <p class="section-lead">From a modest rope-making shed along Manila Bay to an internationally recognized manufacturer, our journey is woven into the very fabric of Philippine industry.</p>
+      <div class="history-quote">
+        <p>We don't just manufacture rope — we create lifelines. Every strand we produce carries the weight of trust, the legacy of our craftsmen, and the promise of tomorrow.</p>
+        <cite>— The Manila Cordage Legacy</cite>
+      </div>
+    </div>
+    <div class="timeline fade-up">
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">1924</div>
+        <div class="timeline-title">The Early Years</div>
+        <p class="timeline-text">Manco’s roots go back 80 years to a City whose commerce was closely linked to Manila Bay and to the Pasig River, an important artery through which inland goods were brought to the Port along the Bay and from there shipped out.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-text">On February 20, 1924, Manila Cordage Company, a subsidiary of Tubbs Cordage Company of San Francisco, began operations at the junction of Cristobal and Otis streets in Paco, which had easy access to the Pasig.  Its basic raw material was abaca, also known as Manila hemp, which by then was a much sought after commodity in North America.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-text">From the start, the company was outward looking.  Manco ropes found their way around the globe.  Although the bulk went to the Americas, the rest were exported to nearby ports in Java, Sumatra, and Celebes (of the present day Indonesian republic), the Federated Malay States, the Straits Settlements, Siam (Thailand), French Indo China (territories of Laos, Cambodia, and Vietnam), and parts of the southwest coast of China.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">1941</div>
+        <div class="timeline-title">Interrupted Growth</div>
+        <p class="timeline-text">In December of 1941, the Pacific War broke out and ravaged the country.  For the next three years, the mill was run as a branch of the Tokyo Rope Works and its managers imprisoned at a concentration camp.  In early 1945, Manila was liberated and by mid-year, the mill was back in business.  The first ropes produced were for the U.S. Army.
+By the late 1950’s, the Paco mill was overflowing. Manila itself was getting crowded.  Manco had to relocate. </p>
+
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">1964</div>
+        <div class="timeline-title">The Middle Years</div>
+        <p class="timeline-text">Groundbreaking for the new mill in Makati took place in 1964.  A year later, the work was finished; the mill was cited as the “most modern rope facility in the Far East.”  In 1966, Manila Cordage began the production of large-sized plaited synthetic ropes, the first to do so in the Philippines.
+
+The Seventies ushered in a major organization change.  A group of Filipino businessmen acquired majority control of the Company.  Under the new management team, Manco entered a new growth stage. </p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">Today</div>
+        <div class="timeline-title">A New Growth Stage</div>
+        <p class="timeline-text">Manila Cordage has led the local rope industry.  It has been “Number One” for the last thirty three years.
+
+Manco has two focused mills: Synthetics and Hard Fiber.  Quality assurance remains a major focus of the Company.  It constantly endeavors to improve production processes and to upgrade equipment whenever possible.</p><br>
+<p class="timeline-text"> Manco is the only ISO9001:2000 Certified cordage manufacturer in the Philippines.</p><br>
+<p class="timeline-text"> While the demand for synthetic cordage has leapt tremendously over the years, Manila rope remains an important product.  The reason for this is simple: Manila ropes are environment friendly.  Moreover, they are required by certain industrial operations like oil drilling and construction.</p><br>
+<p class="timeline-text"> Manco's new home located in the country's industrial hub.  A 6.4 hectare property large enough to accommodate future growth.</p><br>
+<p class="timeline-text"> The Company has been blessed with hardworking and loyal personnel who have ensured its continued growth. 
+If the Past is Prologue to the Future, Manila Cordage Company can look ahead with confidence to the coming years.</p><br>
+<p class="timeline-text"> Manco celebrated its 102 year anniversary in 2026</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="fade-up">
+      <div class="section-tag">Reach Us</div>
+      <h2 class="section-h2">Let's Start a <em>Conversation</em></h2>
+      <div class="divider"></div>
+      <p class="section-lead">Whether you need a bulk order quote, product specifications, or technical consultation — our team is ready to assist.</p>
+
+      <div class="contact-info-cards">
+        <div class="contact-card">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-card-label">Headquarters</div>
+            <div class="contact-card-val">116 Progress Avenue, Carmelray Industrial Park I<br>Canlubang, Calamba, Laguna 2421</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-card-label">Phone</div>
+            <div class="contact-card-val">+63 2 8888 1234<br>+63 917 555 0001</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <div class="contact-card-label">Email</div>
+            <div class="contact-card-val">EmailyowAguinaldow@email.com<br>info@manilacordage.com</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <div class="contact-card-label">Business Hours</div>
+            <div class="contact-card-val">Monday – Friday: 6:30 AM – 4:00 PM<br>Saturday: 8:00 AM – 12:00 PM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap fade-up">
+      <div class="form-title">Send Us a Message</div>
+      <p class="form-sub">We'll get back to you within 1–2 business days.</p>
+      <div id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="Juan">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="dela Cruz">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="juan@company.com">
+        </div>
+        <div class="form-group">
+          <label>Company / Organization</label>
+          <input type="text" placeholder="Your company name">
+        </div>
+        <div class="form-group">
+          <label>Inquiry Type</label>
+          <select>
+            <option value="">Select an inquiry type</option>
+            <option>Product Information</option>
+            <option>Bulk Order / Quote Request</option>
+            <option>Technical Specifications</option>
+            <option>Export / International Order</option>
+            <option>Partnership Inquiry</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Describe your inquiry or requirements in detail…"></textarea>
+        </div>
+        <button class="btn-submit" onclick="submitForm()">Send Message</button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        ✅ Thank you! Your message has been sent. We'll be in touch shortly.
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+
+  <div class="footer-top" 
+       style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+
+    <div class="footer-brand">
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+
+        <img src="images/MCC-Logos-1a (1).gif" alt="Company Logo">
+        <img src="images/MSI.png" alt="logodin">
+
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--white);letter-spacing:1px;">
+            Manila Cordage Company
+          </div>
+
+          <div style="font-size:14px;color:var(--sky);letter-spacing:2px;">
+            Since 1924
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer-bottom" 
+       style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; margin-top:15px;">
+
+    <span>© 2026 Manila Cordage Company. All rights reserved.</span>
+
+  </div>
+
+</footer>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal" onclick="closeModalOutside(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-img" id="modalImg"></div>
+    <div class="modal-content">
+      <div class="modal-cat" id="modalCat"></div>
+      <div class="modal-name" id="modalName"></div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-specs-grid" id="modalSpecsGrid"></div>
+      <div class="modal-footer">
+        <button class="modal-close" onclick="closeModal()">Close</button>
+        <button class="modal-enquire" onclick="closeModal(); document.getElementById('contact').scrollIntoView({behavior:'smooth'});">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Form submit
+  function submitForm() {
+    const inputs = document.querySelectorAll('#contactForm input, #contactForm textarea, #contactForm select');
+    let valid = true;
+    inputs.forEach(i => { if (!i.value.trim()) valid = false; });
+    if (!valid) { alert('Please fill in all fields before submitting.'); return; }
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').classList.add('show');
+  }
+
+  // Active nav link highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--mid-blue)' : '';
+    });
+  });
+// Product modal data
+const productData = [
+  {
+    img: 'images/ManilaRope.jpg',
+    bg: 'pc-blue',
+    cat: 'Natural Fiber',
+    name: 'Manila Rope',
+    desc: 'These Natural ropes are manufactured from selected high and medium grade fibers. They suit the demands of the oil industry, shipping, construction, agriculture, and in the manufacture of Bio-Plastics.  Class 1 Manila is a high grade general purpose rope best suited for jobs where economy, strength, and durability are necessary. It has great resistance from mildew and agricultural deterioration.  If you are looking for the strongest natural fiber rope, look no further. '
+    
+  },
+  {
+    img: 'images/Skyline.jpg',
+    bg: 'pc-navy',
+    cat: 'Synthetic',
+    name: 'Polypropylene Rope',
+    desc: 'HIGH SAFETY - 25% Stronger than regular PP rope.  With a specific gravity of .91, SUPERMONO is the lightest of synthetic ropes. It can float indefinitely.  SUPERMONO 911 rope has been employed effectively as: mooring or hawser lineS; anchor lineS; towing lineS; utility pull lines for tension stringing; target tow ropeS; heaving lineS; barrier ropeS; life lines for rafts and floats; water/snow ski tows; and as industrial slings. Blue with a white marker is the standard color. The standard coil length is 600 or 720 feet. These ropes can be manufactured to conform to US, British, Canadian, ISO, and Australian specifications.',
+  },
+  {
+    img: 'images/Nyline-2A.jpg',
+    bg: 'pc-grey',
+    cat: 'Industrial',
+    name: 'Nylon Rope',
+    desc: 'Nyline is made from high grade Nylon, one of the strongest of the synthetic fibers used in rope manufacturing.  It is an excellent, high quality rope with wonderful elasticity.  Nylon is more than twice as strong as Manila Rope of the same size. Superior resistance to most acids and alkalis is another outstanding characteristic of Nylon. Among the heaviest of natural and synthetic fibers, Nylon specific gravity is 1.14. Its abrasive resistance is good. Nylon is ideal for use as bow-to-stern towing hawsers; surge lines; mountain climbing ropes; safety lines; lariat ropes; boat falls; drop hammer ropes; target tow ropes; fishing ropes; and industrial slings. Ropes can be manufactured to conform to US, British, Canadian, and Australian specifications.',
+  },
+  {
+    img: 'images/MCC2012-Terypro-a.jpg',
+    bg: 'pc-teal',
+    cat: 'Synthetic',
+    name: 'Terypro',
+    desc: "Terypro is manufactured from a combination of synthetic fibers: Polypropylene and Polyester. The combined properties of these two fibers have produced a rope ideal for marine applications.  Its polypropylene fibers provide Terypro good creep strength. Its polyester content gives it a great capacity to disperse heat. With Terypro's polyester cover, aside from warding off friction induced heat, the rope is given a high resistance to acids and alkalis, rot and mildew, making it ideal for marine use.",
+  },
+  {
+    img: 'images/Esterliine-2.jpg',
+    bg: 'pc-sky',
+    cat: 'Polyester',
+    name: 'ESTERLINE',
+    desc: "Twice as strong as Manila Rope, Polyester is about as strong as Nylon. It retains full strength even when wet, a major characteristic that makes Polyester particularly suitable for holding ships at dockside. While it is slightly resistant to some alkalis, it is strongly resistant to acids. Furthermore, it is not susceptible to deterioration caused by rot, mildew, or moisture. Its specific gravity is 1.36 and its abrasion resistance is approximately the same as that of Manila Rope. Polyester is a rope for varied uses. Good for mooring, rigging and industrial plant use, it is used as rope slings, and alongside towing hawsers. Ropes can be manufactured to conform to US, British, Canadian, and Australian specifications."
+  },
+  {
+    img: 'images/MCC2012-Ultraline-1.jpg',
+    bg: 'pc-steel',
+    cat: 'Danline',
+    name: 'MEGALINE',
+    desc: 'Ideal for mooring lines and general marine applications comes in 3, 4, 8 strands'
+  }
+];
+
+
+// OPEN MODAL
+function openModal(index) {
+  const p = productData[index];
+
+  const modalImg = document.getElementById('modalImg');
+
+  modalImg.className = 'modal-img ' + p.bg;
+  modalImg.innerHTML = `
+    <img src="${p.img}" alt="${p.name}" 
+         style="width:100%; height:100%; object-fit:contain;">
+  `;
+
+  document.getElementById('modalCat').textContent = p.cat;
+  document.getElementById('modalName').textContent = p.name;
+  document.getElementById('modalDesc').textContent = p.desc;
+
+  const grid = document.getElementById('modalSpecsGrid');
+  grid.innerHTML = p.specs.map(s =>
+    `<div class="modal-spec-item">
+      <div class="modal-spec-label">${s.label}</div>
+      <div class="modal-spec-val">${s.val}</div>
+    </div>`
+  ).join('');
+
+  document.getElementById('productModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+
+// CLOSE MODAL
+function closeModal() {
+  document.getElementById('productModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+
+// CLOSE WHEN CLICKING OUTSIDE
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('productModal')) closeModal();
+}
+
+
+// ESC KEY CLOSE
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+
+// PRODUCT CARD CLICK EVENTS
+document.querySelectorAll('.product-card').forEach((card, i) => {
+  card.addEventListener('click', (e) => {
+    e.preventDefault();
+    openProductPage(i);
+  });
+});
+function openProductPage(index) {
+  const p = productData[index];
+
+  document.getElementById('fullProductContent').innerHTML = `
+    <div style="max-width:800px; margin:auto;">
+
+      <div style="width:100%; height:300px; background:${getColor(p.bg)}; display:flex; align-items:center; justify-content:center; border-radius:10px; margin-bottom:20px;">
+        <img src="${p.img}" alt="${p.name}" style="max-height:80%; max-width:80%; object-fit:contain;">
+      </div>
+
+      <h2 style="font-size:32px; margin-bottom:10px;">${p.name}</h2>
+      <h4 style="color:#2E86C1; margin-bottom:20px;">${p.cat}</h4>
+      <p style="line-height:1.6; margin-bottom:30px;">${p.desc}</p>
+
+    </div>
+  `;
+
+  document.getElementById('products').style.display = 'none';
+  document.getElementById('productPage').style.display = 'block';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeProductPage() {
+  document.getElementById('products').style.display = 'block';
+  document.getElementById('productPage').style.display = 'none';
+}
+
+function getColor(bg) {
+  const colors = {
+    'pc-blue': '#EBF5FB',
+    'pc-navy': '#EAF0F6',
+    'pc-grey': '#F2F3F4',
+    'pc-teal': '#E8F8F5',
+    'pc-sky': '#EBF5FB',
+    'pc-steel': '#EAF0F6'
+  };
+  return colors[bg] || '#fff';
+}
+
+</script>
+</body>
+</html>
