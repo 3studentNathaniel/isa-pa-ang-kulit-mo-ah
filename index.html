@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pay & OT Calculator - Dark Theme</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pay & OT Calculator - Mobile Optimized</title>
     <!-- Google Fonts for modern typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,6 +29,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Removes touch flash on mobile */
         }
 
         body {
@@ -39,6 +40,7 @@
             align-items: center;
             padding: 20px;
             color: var(--text-main);
+            overflow-x: hidden;
         }
 
         .calc-wrapper {
@@ -86,7 +88,7 @@
         .toggle-container label {
             flex: 1;
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             font-size: 13px;
             font-weight: 700;
             color: var(--text-muted);
@@ -125,13 +127,23 @@
         .form-group input {
             width: 100%;
             padding: 14px 16px;
-            font-size: 16px;
+            font-size: 16px; /* Kept at 16px to prevent auto-zooming on iOS */
             font-weight: 600;
             color: var(--text-main);
             border: 2px solid var(--border-color);
             border-radius: 12px;
             background-color: #0f172a;
             transition: all 0.2s ease;
+        }
+
+        /* Hide mobile input spinner indicators for cleaner alignment */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
         }
 
         .form-group input:focus {
@@ -330,6 +342,88 @@
             margin-top: 8px;
             text-align: center;
         }
+
+        /* Dedicated Mobile Styles (Breakpoint) */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .calc-wrapper {
+                padding: 20px;
+                border-radius: 20px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header p {
+                font-size: 12px;
+            }
+
+            .toggle-container label {
+                padding: 10px;
+                font-size: 12px;
+            }
+
+            .grid-2 {
+                gap: 12px;
+            }
+
+            .form-group label {
+                font-size: 11px;
+            }
+
+            .form-group input {
+                padding: 12px;
+            }
+
+            .btn-group {
+                gap: 8px;
+            }
+
+            button {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .results-grid {
+                gap: 8px;
+            }
+
+            .result-card {
+                padding: 10px;
+            }
+
+            .result-card .label {
+                font-size: 10px;
+            }
+
+            .result-card .value {
+                font-size: 14px; /* Ensure larger numbers don't wrap and break */
+            }
+
+            .breakdown-list {
+                padding: 12px;
+            }
+
+            .breakdown-row {
+                font-size: 13px;
+            }
+
+            .payout-card {
+                padding: 16px;
+            }
+
+            .payout-card .value {
+                font-size: 24px; /* Scaled down for mobile fit */
+            }
+
+            .countdown-text {
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -340,7 +434,7 @@
 <div class="calc-wrapper">
     <div class="header">
         <h1>Pay & OT Calculator</h1>
-        
+        <p>Calculations based on fixed ₱18,780.00 monthly salary</p>
     </div>
 
     <!-- Toggle Selection -->
@@ -356,14 +450,15 @@
         <div class="form-group">
             <label for="otHours">OT Hours worked</label>
             <div class="input-wrapper">
-                <input type="number" id="otHours" placeholder="0" min="0" step="0.1" oninput="liveCalculate()">
+                <!-- inputmode="decimal" opens the native number keypad with decimals on mobile devices -->
+                <input type="number" id="otHours" placeholder="0" min="0" step="0.1" inputmode="decimal" oninput="liveCalculate()">
             </div>
         </div>
 
         <div class="form-group">
             <label for="daysAbsent">Days Absent</label>
             <div class="input-wrapper">
-                <input type="number" id="daysAbsent" placeholder="0" min="0" step="0.5" oninput="liveCalculate()">
+                <input type="number" id="daysAbsent" placeholder="0" min="0" step="0.5" inputmode="decimal" oninput="liveCalculate()">
             </div>
         </div>
     </div>
