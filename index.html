@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay & OT Calculator - Dark Theme</title>
+    <!-- Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --card-bg: #1e293b;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-success: #34d399;
+            --accent-danger: #f87171;
+            --border-color: #334155;
+            --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+            --inner-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text-main);
+        }
+
+        .calc-wrapper {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Segmented Toggle Control */
+        .toggle-container {
+            display: flex;
+            background: #0f172a;
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+        }
+
+        .toggle-container input[type="radio"] {
+            display: none;
+        }
+
+        .toggle-container label {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .toggle-container input[type="radio"]:checked + label {
+            background: #1e293b;
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background-color: #0f172a;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #0f172a;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #0f172a;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #1e293b;
+            color: var(--text-main);
+        }
+
+        .results-section {
+            margin-top: 30px;
+            border-top: 2px solid var(--border-color);
+            padding-top: 25px;
+            display: none;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .result-card {
+            background-color: #0f172a;
+            border: 1px solid var(--border-color);
+            padding: 12px 14px;
+            border-radius: 12px;
+        }
+
+        .result-card-full {
+            grid-column: span 2;
+        }
+
+        .result-card .label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .result-card .value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Pay Breakdown Summary */
+        .breakdown-list {
+            margin-bottom: 20px;
+            background-color: #0f172a;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px dashed var(--border-color);
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .breakdown-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .breakdown-row.deduction {
+            color: var(--accent-danger);
+        }
+
+        .breakdown-row.addition {
+            color: var(--accent-success);
+        }
+
+        .breakdown-row.neutral {
+            color: var(--text-muted);
+        }
+
+        .payout-card {
+            background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+            border: 1px solid #047857;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .payout-card .label {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #34d399;
+            margin-bottom: 6px;
+        }
+
+        .payout-card .value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #34d399;
+        }
+
+        /* Payday Countdown Styling */
+        .countdown-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .countdown-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-container {
+            background-color: #0f172a;
+            height: 10px;
+            width: 100%;
+            border-radius: 999px;
+            overflow: hidden;
+            box-shadow: var(--inner-shadow);
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+            height: 100%;
+            border-radius: 999px;
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .countdown-text {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Retains the fixed salary value without displaying the input -->
+<input type="hidden" id="monthlySalary" value="18780">
+
+<div class="calc-wrapper">
+    <div class="header">
+        <h1>Pay & OT Calculator</h1>
+        
+    </div>
+
+    <!-- Toggle Selection -->
+    <div class="toggle-container">
+        <input type="radio" id="viewMonth" name="payView" value="month" checked onchange="liveCalculate()">
+        <label for="viewMonth">Whole Month</label>
+        
+        <input type="radio" id="viewCutoff" name="payView" value="cutoff" onchange="liveCalculate()">
+        <label for="viewCutoff">One Cut-off (1/2 Month)</label>
+    </div>
+
+    <div class="grid-2">
+        <div class="form-group">
+            <label for="otHours">OT Hours worked</label>
+            <div class="input-wrapper">
+                <input type="number" id="otHours" placeholder="0" min="0" step="0.1" oninput="liveCalculate()">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="daysAbsent">Days Absent</label>
+            <div class="input-wrapper">
+                <input type="number" id="daysAbsent" placeholder="0" min="0" step="0.5" oninput="liveCalculate()">
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-secondary" onclick="resetCalculator()">Reset</button>
+        <button class="btn-primary" onclick="triggerCalculate()">Calculate</button>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="resultsSection">
+        
+        <div class="results-grid">
+            <div class="result-card">
+                <span class="label">Daily Rate</span>
+                <span class="value" id="dailyRate">₱0.00</span>
+            </div>
+            
+            <div class="result-card">
+                <span class="label">Hourly Rate</span>
+                <span class="value" id="hourlyRate">₱0.00</span>
+            </div>
+
+            <div class="result-card result-card-full">
+                <span class="label">OT Rate per Hour (1.25x)</span>
+                <span class="value" id="otHourlyRate">₱0.00</span>
+            </div>
+        </div>
+
+        <!-- Payroll Breakdown -->
+        <div class="breakdown-list">
+            <div class="breakdown-row">
+                <span id="baseSalaryLabel">Basic Salary:</span>
+                <span id="baseSalaryValue">₱0.00</span>
+            </div>
+            <div class="breakdown-row deduction">
+                <span>Absence Deductions:</span>
+                <span id="absenceValue">-₱0.00</span>
+            </div>
+            <div class="breakdown-row addition">
+                <span>Overtime Pay:</span>
+                <span id="otValue">+₱0.00</span>
+            </div>
+            <!-- Perfect Attendance Bonus Row -->
+            <div class="breakdown-row" id="bonusRow">
+                <span>Attendance Bonus:</span>
+                <span id="bonusValue">+₱0.00</span>
+            </div>
+        </div>
+
+        <!-- Total Take-home Payout -->
+        <div class="payout-card">
+            <span class="label" id="netPayLabel">Estimated Net Month Pay</span>
+            <span class="value" id="totalOT">₱0.00</span>
+        </div>
+    </div>
+
+    <!-- Payday Loading / Countdown Section -->
+    <div class="countdown-section">
+        <div class="countdown-header">
+            <span>Payday Progress</span>
+            <span id="progressPercent" style="color: var(--accent-success);">0%</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
+        <div class="countdown-text" id="countdownLabel">Loading pay schedule...</div>
+    </div>
+</div>
+
+<script>
+    // Performs calculation and updates HTML elements
+    function performCalculation() {
+        const monthlySalary = parseFloat(document.getElementById('monthlySalary').value);
+        const otHours = parseFloat(document.getElementById('otHours').value) || 0;
+        const daysAbsent = parseFloat(document.getElementById('daysAbsent').value) || 0;
+        const isCutoff = document.getElementById('viewCutoff').checked;
+
+        if (isNaN(monthlySalary) || monthlySalary <= 0) {
+            return false;
+        }
+
+        // 1. Calculate Standard Rates
+        const dailyRate = monthlySalary / 26;
+        const hourlyRate = dailyRate / 8;
+        const otHourlyRate = hourlyRate * 1.25;
+
+        // 2. Adjust Base Pay based on selection (Whole Month vs One Cut-off)
+        const basePay = isCutoff ? (monthlySalary / 2) : monthlySalary;
+
+        // 3. Perfect Attendance Bonus logic: ₱250 per cut-off
+        // If "Whole Month" is viewed, no absences across the month adds ₱500 (₱250 × 2)
+        const baseBonusPerCutoff = 250;
+        const attendanceBonus = (daysAbsent === 0) ? (isCutoff ? baseBonusPerCutoff : baseBonusPerCutoff * 2) : 0;
+
+        // 4. Calculate additions and deductions
+        const totalOTPay = otHourlyRate * otHours;
+        const totalAbsenceDeduction = dailyRate * daysAbsent;
+
+        // 5. Final Estimated Net Pay including the attendance bonus
+        const netPay = basePay - totalAbsenceDeduction + totalOTPay + attendanceBonus;
+
+        // Render Rates
+        document.getElementById('dailyRate').innerText = formatCurrency(dailyRate);
+        document.getElementById('hourlyRate').innerText = formatCurrency(hourlyRate);
+        document.getElementById('otHourlyRate').innerText = formatCurrency(otHourlyRate);
+
+        // Render Breakdown
+        document.getElementById('baseSalaryLabel').innerText = isCutoff ? 'Basic Pay (1/2 Month Cut-off):' : 'Basic Pay (Whole Month):';
+        document.getElementById('baseSalaryValue').innerText = formatCurrency(basePay);
+        document.getElementById('absenceValue').innerText = '-' + formatCurrency(totalAbsenceDeduction);
+        document.getElementById('otValue').innerText = '+' + formatCurrency(totalOTPay);
+
+        // Render Perfect Attendance Bonus Row
+        const bonusRow = document.getElementById('bonusRow');
+        const bonusValue = document.getElementById('bonusValue');
+        if (attendanceBonus > 0) {
+            bonusRow.className = "breakdown-row addition";
+            bonusValue.innerText = '+' + formatCurrency(attendanceBonus);
+        } else {
+            bonusRow.className = "breakdown-row neutral";
+            bonusValue.innerText = formatCurrency(0) + " (Lost due to absence)";
+        }
+
+        // Render Total Pay
+        document.getElementById('netPayLabel').innerText = isCutoff ? 'Estimated Net Cut-off Pay' : 'Estimated Net Month Pay';
+        document.getElementById('totalOT').innerText = formatCurrency(netPay);
+
+        return true;
+    }
+
+    function formatCurrency(amount) {
+        return '₱' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function liveCalculate() {
+        const resultsSection = document.getElementById('resultsSection');
+        const success = performCalculation();
+        
+        if (success) {
+            resultsSection.style.display = 'block';
+        } else {
+            resultsSection.style.display = 'none';
+        }
+    }
+
+    function triggerCalculate() {
+        const success = performCalculation();
+        if (!success) {
+            alert("Calculation error. Please ensure the page loaded correctly.");
+        } else {
+            document.getElementById('resultsSection').style.display = 'block';
+        }
+    }
+
+    function resetCalculator() {
+        document.getElementById('otHours').value = '';
+        document.getElementById('daysAbsent').value = '';
+        document.getElementById('viewMonth').checked = true;
+        liveCalculate();
+    }
+
+    // Payday calculations (5th and 20th of the month)
+    function updatePaydayCountdown() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const date = now.getDate();
+
+        let prevPayday, nextPayday;
+
+        // Check if today is exactly payday
+        if (date === 5 || date === 20) {
+            document.getElementById('progressBarFill').style.width = '100%';
+            document.getElementById('progressPercent').innerText = '100%';
+            document.getElementById('countdownLabel').innerText = '🎉 Payday is today!';
+            return;
+        }
+
+        // Determine the pay periods
+        if (date < 5) {
+            // Cycle: 20th of last month to 5th of this month
+            prevPayday = new Date(year, month - 1, 20);
+            nextPayday = new Date(year, month, 5);
+        } else if (date > 5 && date < 20) {
+            // Cycle: 5th of this month to 20th of this month
+            prevPayday = new Date(year, month, 5);
+            nextPayday = new Date(year, month, 20);
+        } else {
+            // Date > 20
+            // Cycle: 20th of this month to 5th of next month
+            prevPayday = new Date(year, month, 20);
+            nextPayday = new Date(year, month + 1, 5);
+        }
+
+        // Normalize midnight for day calculations
+        now.setHours(0, 0, 0, 0);
+        prevPayday.setHours(0, 0, 0, 0);
+        nextPayday.setHours(0, 0, 0, 0);
+
+        const totalMs = nextPayday - prevPayday;
+        const elapsedMs = now - prevPayday;
+
+        const totalDays = Math.round(totalMs / (1000 * 60 * 60 * 24));
+        const elapsedDays = Math.round(elapsedMs / (1000 * 60 * 60 * 24));
+        const remainingDays = totalDays - elapsedDays;
+
+        let percentage = Math.round((elapsedDays / totalDays) * 100);
+        if (percentage < 0) percentage = 0;
+        if (percentage > 100) percentage = 100;
+
+        // Format date string for displaying the next target payday (e.g., "Aug 5")
+        const formattedNextPayday = nextPayday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+        // Update UI
+        document.getElementById('progressBarFill').style.width = percentage + '%';
+        document.getElementById('progressPercent').innerText = percentage + '%';
+        
+        if (remainingDays === 1) {
+            document.getElementById('countdownLabel').innerText = `1 day left before payday (${formattedNextPayday})`;
+        } else {
+            document.getElementById('countdownLabel').innerText = `${remainingDays} days left before payday (${formattedNextPayday})`;
+        }
+    }
+
+    // Automatically trigger on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        liveCalculate();
+        updatePaydayCountdown();
+    });
+</script>
+
+</body>
+</html>
