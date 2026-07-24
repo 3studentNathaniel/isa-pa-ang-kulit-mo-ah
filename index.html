@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pay & OT Calculator - Mobile Optimized</title>
+    <title>PayRollFlow Dashboard</title>
     <!-- Google Fonts for modern typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,17 +11,17 @@
     
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            --card-bg: #1e293b;
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-success: #34d399;
-            --accent-danger: #f87171;
-            --border-color: #334155;
-            --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-            --inner-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+            --bg-gradient: linear-gradient(180deg, #030712 0%, #080f25 100%);
+            --card-bg: #0b0f19; /* Deep premium midnight slate */
+            --primary: #818cf8; /* Calm, relaxing soft lavender-indigo */
+            --primary-hover: #6366f1;
+            --text-main: #f3f4f6; /* Soft off-white */
+            --text-muted: #6b7280; /* Neutral low-contrast gray */
+            --accent-success: #10b981; /* Relaxing mint green */
+            --accent-danger: #f87171; /* Soft danger rose/red */
+            --border-color: #1f2937; /* Very dark slate borders */
+            --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            --inner-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.4);
         }
 
         * {
@@ -35,38 +35,176 @@
         body {
             background: var(--bg-gradient);
             min-height: 100vh;
+            color: var(--text-main);
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* Utility helper */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Login Screen Layout */
+        .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            color: var(--text-main);
-            overflow-x: hidden;
-        }
-
-        .calc-wrapper {
-            background: var(--card-bg);
+            min-height: 80vh;
             width: 100%;
-            max-width: 500px;
-            border-radius: 24px;
-            padding: 35px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .header {
+        .login-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--card-shadow);
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .login-brand {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
             text-align: center;
             margin-bottom: 24px;
         }
 
-        .header h1 {
-            font-size: 24px;
+        .login-brand span {
+            color: var(--primary);
+        }
+
+        .login-card h2 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .login-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .login-error {
+            background-color: rgba(248, 113, 113, 0.1);
+            border: 1px solid var(--accent-danger);
+            color: var(--accent-danger);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Standard App Container */
+        .app-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Persistent Top Navigation Bar */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 18px;
+            padding: 14px 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .nav-brand {
+            font-size: 20px;
             font-weight: 800;
             color: var(--text-main);
             letter-spacing: -0.5px;
         }
 
-        .header p {
-            font-size: 14px;
+        .nav-brand span {
+            color: var(--primary);
+        }
+
+        .nav-tabs {
+            display: flex;
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            padding: 4px;
+            border-radius: 10px;
+            align-items: center;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .nav-tab.active {
+            background-color: var(--primary);
+            color: #030712; /* Dark contrast text on top of bright active tab */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 800;
+        }
+
+        /* Desktop Dashboard Columns */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* Left Content Panel */
+        .view-panel {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: var(--card-shadow);
+        }
+
+        .view-content {
+            display: none;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .view-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .view-header {
+            margin-bottom: 20px;
+        }
+
+        .view-header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .view-header p {
+            font-size: 13px;
             color: var(--text-muted);
             margin-top: 4px;
         }
@@ -74,7 +212,7 @@
         /* Segmented Toggle Control */
         .toggle-container {
             display: flex;
-            background: #0f172a;
+            background: #030712;
             padding: 4px;
             border-radius: 12px;
             margin-bottom: 24px;
@@ -99,9 +237,91 @@
         }
 
         .toggle-container input[type="radio"]:checked + label {
-            background: #1e293b;
+            background: var(--border-color);
             color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Attendance Clock Card */
+        .attendance-card {
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .clock-display {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            background-color: rgba(248, 113, 113, 0.1);
+            color: var(--accent-danger);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .status-badge.active-shift {
+            background-color: rgba(129, 140, 248, 0.15);
+            color: var(--primary);
+        }
+
+        .status-badge.completed-shift {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--accent-success);
+        }
+
+        /* Sync banner styling */
+        .sync-banner {
+            background-color: rgba(129, 140, 248, 0.05);
+            border: 1px dashed var(--primary);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .sync-banner-text {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .sync-banner-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .btn-sync {
+            background-color: var(--primary);
+            color: #030712;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 800;
+            border-radius: 8px;
+            max-width: 120px;
+            flex-shrink: 0;
+        }
+
+        .btn-sync:hover {
+            background-color: var(--primary-hover);
         }
 
         .form-group {
@@ -124,33 +344,23 @@
             align-items: center;
         }
 
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 14px 16px;
-            font-size: 16px; /* Kept at 16px to prevent auto-zooming on iOS */
+            font-size: 16px; /* Prevents auto-zooming on iOS */
             font-weight: 600;
             color: var(--text-main);
             border: 2px solid var(--border-color);
             border-radius: 12px;
-            background-color: #0f172a;
+            background-color: #030712;
             transition: all 0.2s ease;
         }
 
-        /* Hide mobile input spinner indicators for cleaner alignment */
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-        .form-group input:focus {
+        .form-group input:focus, .form-group select:focus {
             outline: none;
             border-color: var(--primary);
-            background-color: #0f172a;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            background-color: #030712;
+            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.15);
         }
 
         .grid-2 {
@@ -168,7 +378,7 @@
         button {
             flex: 1;
             padding: 14px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             border-radius: 12px;
             cursor: pointer;
@@ -176,25 +386,30 @@
             border: none;
         }
 
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
-        .btn-primary:hover {
+        .btn-primary {
+            background-color: var(--primary);
+            color: #030712;
+            box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2);
+        }
+
+        .btn-primary:hover:not(:disabled) {
             background-color: var(--primary-hover);
             transform: translateY(-1px);
         }
 
         .btn-secondary {
-            background-color: #0f172a;
+            background-color: #030712;
             color: var(--text-muted);
             border: 1px solid var(--border-color);
         }
 
-        .btn-secondary:hover {
-            background-color: #1e293b;
+        .btn-secondary:hover:not(:disabled) {
+            background-color: var(--border-color);
             color: var(--text-main);
         }
 
@@ -202,51 +417,14 @@
             margin-top: 30px;
             border-top: 2px solid var(--border-color);
             padding-top: 25px;
-            display: none;
+            display: none; /* Starts hidden on page load */
             animation: fadeIn 0.3s ease-out forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .result-card {
-            background-color: #0f172a;
-            border: 1px solid var(--border-color);
-            padding: 12px 14px;
-            border-radius: 12px;
-        }
-
-        .result-card-full {
-            grid-column: span 2;
-        }
-
-        .result-card .label {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .result-card .value {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-main);
         }
 
         /* Pay Breakdown Summary */
         .breakdown-list {
             margin-bottom: 20px;
-            background-color: #0f172a;
+            background-color: #030712;
             border-radius: 12px;
             padding: 16px;
             border: 1px dashed var(--border-color);
@@ -276,10 +454,87 @@
             color: var(--text-muted);
         }
 
+        /* Dropdown/Collapsible styling */
+        .toggle-row {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            margin: -4px -8px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .toggle-row:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .arrow {
+            font-size: 10px;
+            margin-left: 6px;
+            display: inline-block;
+            transition: transform 0.2s ease;
+            color: var(--text-muted);
+        }
+
+        .arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            display: none;
+            padding-left: 16px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            border-left: 2px solid var(--border-color);
+        }
+
+        .sub-row {
+            font-size: 13px !important;
+            color: var(--text-muted);
+            margin-bottom: 8px !important;
+        }
+
+        .sub-row:last-child {
+            margin-bottom: 0 !important;
+        }
+
+        .deduction-color {
+            color: var(--accent-danger);
+        }
+
+        /* Gross Salary Display Card */
+        .gross-card {
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .gross-card .label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .gross-card .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Net Salary Display Card */
         .payout-card {
-            background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+            background: linear-gradient(135deg, #022c22 0%, #001f14 100%);
             border: 1px solid #047857;
-            padding: 20px;
+            padding: 24px;
             border-radius: 16px;
             text-align: center;
         }
@@ -297,15 +552,206 @@
             font-size: 32px;
             font-weight: 800;
             color: #34d399;
+            overflow-wrap: break-word; /* Prevents long text from clipping on narrow layout */
+        }
+
+        /* Save Button inside results */
+        .btn-save {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            color: #ffffff;
+            width: 100%;
+            margin-top: 12px;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+        }
+
+        .btn-save:hover {
+            background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+            transform: translateY(-1px);
+        }
+
+        /* Sidebar Area styling */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: var(--card-shadow);
+        }
+
+        .sidebar-card h3 {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        /* Dynamic history metrics */
+        .history-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .metric-value.highlight {
+            color: var(--accent-success);
+        }
+
+        /* Separate History List Styling */
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .clear-history-btn {
+            background: transparent;
+            color: var(--accent-danger);
+            border: none;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .clear-history-btn:hover {
+            background-color: rgba(248, 113, 113, 0.1);
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        /* Scrollbar for History */
+        .history-list::-webkit-scrollbar {
+            width: 5px;
+        }
+        .history-list::-webkit-scrollbar-track {
+            background: #030712;
+            border-radius: 10px;
+        }
+        .history-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
+
+        .history-item {
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .history-meta {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .history-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .history-values {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .history-payout {
+            text-align: right;
+        }
+
+        .history-net {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--accent-success);
+        }
+
+        .history-gross {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .delete-item-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: color 0.2s, background-color 0.2s;
+            line-height: 1;
+        }
+
+        .delete-item-btn:hover {
+            color: var(--accent-danger);
+            background-color: rgba(248, 113, 113, 0.1);
+        }
+
+        .no-history {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            padding: 24px;
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
         }
 
         /* Payday Countdown Styling */
-        .countdown-section {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 2px solid var(--border-color);
-        }
-
         .countdown-header {
             display: flex;
             justify-content: space-between;
@@ -319,7 +765,7 @@
         }
 
         .progress-bar-container {
-            background-color: #0f172a;
+            background-color: #030712;
             height: 10px;
             width: 100%;
             border-radius: 999px;
@@ -343,193 +789,387 @@
             text-align: center;
         }
 
-        /* Dedicated Mobile Styles (Breakpoint) */
-        @media (max-width: 480px) {
+        /* Dashboard Media Queries */
+        @media (max-width: 868px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 580px) {
             body {
                 padding: 10px;
             }
 
-            .calc-wrapper {
+            .nav-bar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .nav-tabs {
+                width: 100%;
+                justify-content: stretch;
+            }
+
+            .nav-tab {
+                flex: 1;
+                text-align: center;
+                padding: 10px 8px;
+            }
+
+            .view-panel {
                 padding: 20px;
-                border-radius: 20px;
-            }
-
-            .header h1 {
-                font-size: 20px;
-            }
-
-            .header p {
-                font-size: 12px;
-            }
-
-            .toggle-container label {
-                padding: 10px;
-                font-size: 12px;
             }
 
             .grid-2 {
                 gap: 12px;
             }
 
-            .form-group label {
-                font-size: 11px;
-            }
-
-            .form-group input {
-                padding: 12px;
-            }
-
-            .btn-group {
+            .history-metrics {
+                grid-template-columns: 1fr;
                 gap: 8px;
             }
+        }
 
-            button {
-                padding: 12px;
-                font-size: 14px;
-            }
-
-            .results-grid {
+        @media (max-width: 360px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
                 gap: 8px;
-            }
-
-            .result-card {
-                padding: 10px;
-            }
-
-            .result-card .label {
-                font-size: 10px;
-            }
-
-            .result-card .value {
-                font-size: 14px; /* Ensure larger numbers don't wrap and break */
-            }
-
-            .breakdown-list {
-                padding: 12px;
-            }
-
-            .breakdown-row {
-                font-size: 13px;
-            }
-
-            .payout-card {
-                padding: 16px;
-            }
-
-            .payout-card .value {
-                font-size: 24px; /* Scaled down for mobile fit */
-            }
-
-            .countdown-text {
-                font-size: 12px;
             }
         }
     </style>
 </head>
 <body>
 
-<!-- Retains the fixed salary value without displaying the input -->
-<input type="hidden" id="monthlySalary" value="18780">
-
-<div class="calc-wrapper">
-    <div class="header">
-        <h1>Pay & OT Calculator</h1>
-        <p>Calculations based on fixed ₱18,780.00 monthly salary</p>
-    </div>
-
-    <!-- Toggle Selection -->
-    <div class="toggle-container">
-        <input type="radio" id="viewMonth" name="payView" value="month" checked onchange="liveCalculate()">
-        <label for="viewMonth">Whole Month</label>
-        
-        <input type="radio" id="viewCutoff" name="payView" value="cutoff" onchange="liveCalculate()">
-        <label for="viewCutoff">One Cut-off (1/2 Month)</label>
-    </div>
-
-    <div class="grid-2">
-        <div class="form-group">
-            <label for="otHours">OT Hours worked</label>
-            <div class="input-wrapper">
-                <!-- inputmode="decimal" opens the native number keypad with decimals on mobile devices -->
-                <input type="number" id="otHours" placeholder="0" min="0" step="0.1" inputmode="decimal" oninput="liveCalculate()">
-            </div>
+<!-- Login Screen Section -->
+<div id="login-container" class="login-container">
+    <div class="login-card">
+        <div class="login-brand">
+            <span>Pay</span>RollFlow
         </div>
-
-        <div class="form-group">
-            <label for="daysAbsent">Days Absent</label>
-            <div class="input-wrapper">
-                <input type="number" id="daysAbsent" placeholder="0" min="0" step="0.5" inputmode="decimal" oninput="liveCalculate()">
-            </div>
-        </div>
-    </div>
-
-    <div class="btn-group">
-        <button class="btn-secondary" onclick="resetCalculator()">Reset</button>
-        <button class="btn-primary" onclick="triggerCalculate()">Calculate</button>
-    </div>
-
-    <!-- Results Section -->
-    <div class="results-section" id="resultsSection">
+        <h2>Welcome Back</h2>
+        <p>Enter your credentials to access the payroll system</p>
         
-        <div class="results-grid">
-            <div class="result-card">
-                <span class="label">Daily Rate</span>
-                <span class="value" id="dailyRate">₱0.00</span>
+        <div id="login-error" class="login-error" style="display: none;">
+            Incorrect username or password.
+        </div>
+        
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="username" required autocomplete="username">
             </div>
             
-            <div class="result-card">
-                <span class="label">Hourly Rate</span>
-                <span class="value" id="hourlyRate">₱0.00</span>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
             </div>
-
-            <div class="result-card result-card-full">
-                <span class="label">OT Rate per Hour (1.25x)</span>
-                <span class="value" id="otHourlyRate">₱0.00</span>
-            </div>
-        </div>
-
-        <!-- Payroll Breakdown -->
-        <div class="breakdown-list">
-            <div class="breakdown-row">
-                <span id="baseSalaryLabel">Basic Salary:</span>
-                <span id="baseSalaryValue">₱0.00</span>
-            </div>
-            <div class="breakdown-row deduction">
-                <span>Absence Deductions:</span>
-                <span id="absenceValue">-₱0.00</span>
-            </div>
-            <div class="breakdown-row addition">
-                <span>Overtime Pay:</span>
-                <span id="otValue">+₱0.00</span>
-            </div>
-            <!-- Perfect Attendance Bonus Row -->
-            <div class="breakdown-row" id="bonusRow">
-                <span>Attendance Bonus:</span>
-                <span id="bonusValue">+₱0.00</span>
-            </div>
-        </div>
-
-        <!-- Total Take-home Payout -->
-        <div class="payout-card">
-            <span class="label" id="netPayLabel">Estimated Net Month Pay</span>
-            <span class="value" id="totalOT">₱0.00</span>
-        </div>
+            
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Sign In</button>
+        </form>
     </div>
+</div>
 
-    <!-- Payday Loading / Countdown Section -->
-    <div class="countdown-section">
-        <div class="countdown-header">
-            <span>Payday Progress</span>
-            <span id="progressPercent" style="color: var(--accent-success);">0%</span>
+<!-- Hidden base salary input -->
+<input type="hidden" id="monthlySalary" value="18780">
+
+<!-- Main Application Section (Hidden Initially) -->
+<div id="app-container" class="app-container hidden">
+    <!-- Top Nav Bar -->
+    <header class="nav-bar">
+        <div class="nav-brand">
+            <span>Pay</span>RollFlow
         </div>
-        <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="progressBarFill"></div>
-        </div>
-        <div class="countdown-text" id="countdownLabel">Loading pay schedule...</div>
+        <nav class="nav-tabs">
+            <div class="nav-tab active" id="tab-calculator" onclick="switchTab('calculator')">Calculator</div>
+            <div class="nav-tab" id="tab-attendance" onclick="switchTab('attendance')">Attendance</div>
+            <div class="nav-tab" id="tab-history" onclick="switchTab('history')">History Log</div>
+            <div class="nav-tab" style="color: var(--accent-danger);" onclick="handleLogout()">Log Out</div>
+        </nav>
+    </header>
+
+    <!-- Main Layout Grid -->
+    <div class="main-layout">
+        
+        <!-- Left Panel: Content Area -->
+        <main class="main-content">
+            
+            <!-- Tab 1: Calculator View -->
+            <div id="calculator-view" class="view-panel view-content active">
+                <div class="view-header">
+                    <h2>Calculator</h2>
+                    <p>Enter your hours and absences to calculate deductions, bonus eligibility, and net pay.</p>
+                </div>
+
+                <!-- Sync with Attendance Banner -->
+                <div class="sync-banner" id="attendanceSyncBanner">
+                    <div>
+                        <div class="sync-banner-text">Sync with Attendance Records</div>
+                        <div class="sync-banner-sub" id="syncStatusText">Fetch data from your clocked shifts.</div>
+                    </div>
+                    <button class="btn-sync" onclick="syncAttendanceToCalculator()">Sync Now</button>
+                </div>
+
+                <!-- View Selection Toggle -->
+                <div class="toggle-container">
+                    <input type="radio" id="viewMonth" name="payView" value="month" checked onchange="hideResults(); updateSyncBannerLabel();">
+                    <label for="viewMonth">Whole Month</label>
+                    
+                    <input type="radio" id="viewCutoff" name="payView" value="cutoff" onchange="hideResults(); updateSyncBannerLabel();">
+                    <label for="viewCutoff">One Cut-off (1/2 Month)</label>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="otHours">OT Hours worked</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="otHours" placeholder="0" min="0" step="0.1" inputmode="decimal">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="daysAbsent">Days Absent</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="daysAbsent" placeholder="0" min="0" step="0.5" inputmode="decimal">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="resetCalculator()">Reset</button>
+                    <button class="btn-primary" onclick="triggerCalculate()">Calculate</button>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section" id="resultsSection">
+                    <div class="breakdown-list">
+                        <div class="breakdown-row">
+                            <span id="baseSalaryLabel">Basic Salary:</span>
+                            <span id="baseSalaryValue">₱0.00</span>
+                        </div>
+                        <div class="breakdown-row deduction">
+                            <span>Absence Deductions:</span>
+                            <span id="absenceValue">-₱0.00</span>
+                        </div>
+                        <div class="breakdown-row addition">
+                            <span>Overtime Pay:</span>
+                            <span id="otValue">+₱0.00</span>
+                        </div>
+                        <div class="breakdown-row" id="bonusRow">
+                            <span>Attendance Bonus:</span>
+                            <span id="bonusValue">+₱0.00</span>
+                        </div>
+
+                        <!-- Statutory Dropdown -->
+                        <div style="margin: 12px 0 0 0;">
+                            <div class="breakdown-row toggle-row" onclick="toggleDropdown('statutoryDetails', 'statutoryArrow')">
+                                <span>Statutory Deductions <span id="statutoryArrow" class="arrow">▼</span></span>
+                                <span id="statutoryTotalValue" class="deduction-color">-₱0.00</span>
+                            </div>
+                            <div id="statutoryDetails" class="collapsible-content">
+                                <div class="breakdown-row sub-row deduction">
+                                    <span id="sssLabel">SSS (2.5%):</span>
+                                    <span id="sssValue">-₱0.00</span>
+                                </div>
+                                <div class="breakdown-row sub-row deduction">
+                                    <span>Pag-IBIG (2.0%):</span>
+                                    <span id="pagibigValue">-₱0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gross-card">
+                        <span class="label">Gross Salary (Before Deductions)</span>
+                        <span class="value" id="grossSalary">₱0.00</span>
+                    </div>
+
+                    <div class="payout-card">
+                        <span class="label" id="netPayLabel">Estimated Net Take-Home</span>
+                        <span class="value" id="totalOT">₱0.00</span>
+                    </div>
+
+                    <button class="btn-save" id="saveHistoryBtn" onclick="saveCalculation()">Save to History</button>
+                </div>
+            </div>
+
+            <!-- Tab 2: Attendance Tracker View -->
+            <div id="attendance-view" class="view-panel view-content">
+                <div class="view-header">
+                    <h2>Attendance Tracker</h2>
+                    <p>Log your daily shifts in real-time or simulate manual records to feed the calculator.</p>
+                </div>
+
+                <!-- Clock punch widget -->
+                <div class="attendance-card">
+                    <div class="clock-display" id="liveClock">00:00:00 AM</div>
+                    <div class="status-badge" id="attendanceStatus">Not Clocked In</div>
+                    <div class="btn-group">
+                        <button class="btn-primary" id="btnClockIn" onclick="clockIn()">Clock In</button>
+                        <button class="btn-secondary" id="btnClockOut" onclick="clockOut()" disabled>Clock Out</button>
+                    </div>
+                </div>
+
+                <!-- Manual Shift Generator (For simulating data easily) -->
+                <div style="margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                    <h3 style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 15px;">Simulate Historical Shift</h3>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="manualDate">Shift Date</label>
+                            <input type="date" id="manualDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="manualHours">Total Hours Worked</label>
+                            <input type="number" id="manualHours" placeholder="8" min="1" max="24" step="0.5" inputmode="decimal">
+                        </div>
+                    </div>
+                    <button class="btn-secondary" style="width: 100%;" onclick="submitManualShift()">Add Record</button>
+                </div>
+
+                <!-- Attendance logs -->
+                <div style="margin-top: 30px;">
+                    <div class="history-header">
+                        <h3 style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">Shift Attendance Records</h3>
+                        <button class="clear-history-btn" onclick="clearAttendanceLogs()">Clear Logs</button>
+                    </div>
+                    <div id="attendanceList" class="history-list">
+                        <!-- Dynamic logged shifts -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: History View -->
+            <div id="history-view" class="view-panel view-content">
+                <div class="history-header">
+                    <div class="view-header" style="margin-bottom: 0;">
+                        <h2>Calculation History</h2>
+                        <p>Access your saved payroll configurations and logs.</p>
+                    </div>
+                    <button class="clear-history-btn" id="clearHistoryBtn" onclick="clearAllHistory()">Clear All</button>
+                </div>
+
+                <!-- History Summary Performance Cards -->
+                <div class="history-metrics" id="historyMetrics">
+                    <div class="metric-card">
+                        <div class="metric-label">Total Net Saved</div>
+                        <div class="metric-value highlight" id="metricTotalNet">₱0.00</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Total OT Logged</div>
+                        <div class="metric-value" id="metricTotalOT">0 hrs</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Absence Log</div>
+                        <div class="metric-value" id="metricTotalAbsent">0 days</div>
+                    </div>
+                </div>
+
+                <!-- Container of History Log items -->
+                <div id="historyList" class="history-list">
+                    <!-- Dynamic records -->
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Right Panel: Sidebar Widget -->
+        <aside class="sidebar">
+            
+            <!-- Payday Countdown Widget -->
+            <div class="sidebar-card">
+                <h3>Payday Progress</h3>
+                <div class="countdown-header">
+                    <span>Progress to payday</span>
+                    <span id="progressPercent" style="color: var(--accent-success);">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressBarFill"></div>
+                </div>
+                <div class="countdown-text" id="countdownLabel">Loading pay schedule...</div>
+            </div>
+
+        </aside>
+
     </div>
 </div>
 
 <script>
+    // Global variable to keep track of calculated floats for exact statistics in History
+    let currentCalcData = null;
+    let clockTimer = null;
+
+    // Login logic
+    function handleLogin(event) {
+        event.preventDefault();
+        const userField = document.getElementById('username');
+        const passField = document.getElementById('password');
+        const errorDiv = document.getElementById('login-error');
+
+        const username = userField.value.trim();
+        const password = passField.value;
+
+        if (username === 'nath3044' && password === 'nathaniel') {
+            sessionStorage.setItem('isLoggedIn', 'true');
+            errorDiv.style.display = 'none';
+            userField.value = '';
+            passField.value = '';
+            
+            // Switch views
+            document.getElementById('login-container').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            
+            // Initialize app widgets
+            updatePaydayCountdown();
+            setupMidnightReload();
+            startLiveClock();
+            initAttendanceUI();
+        } else {
+            errorDiv.style.display = 'block';
+            passField.value = '';
+        }
+    }
+
+    // Logout logic
+    function handleLogout() {
+        sessionStorage.removeItem('isLoggedIn');
+        document.getElementById('login-container').classList.remove('hidden');
+        document.getElementById('app-container').classList.add('hidden');
+        
+        // Clear login fields and errors
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('login-error').style.display = 'none';
+        
+        if (clockTimer) {
+            clearInterval(clockTimer);
+        }
+    }
+
+    // Standard tab switcher logic
+    function switchTab(tabName) {
+        document.querySelectorAll('.view-content').forEach(view => {
+            view.classList.remove('active');
+        });
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        if (tabName === 'calculator') {
+            document.getElementById('calculator-view').classList.add('active');
+            document.getElementById('tab-calculator').classList.add('active');
+            updateSyncBannerLabel();
+        } else if (tabName === 'attendance') {
+            document.getElementById('attendance-view').classList.add('active');
+            document.getElementById('tab-attendance').classList.add('active');
+            renderAttendanceLogs();
+        } else if (tabName === 'history') {
+            document.getElementById('history-view').classList.add('active');
+            document.getElementById('tab-history').classList.add('active');
+            renderHistory();
+        }
+    }
+
     // Performs calculation and updates HTML elements
     function performCalculation() {
         const monthlySalary = parseFloat(document.getElementById('monthlySalary').value);
@@ -550,7 +1190,6 @@
         const basePay = isCutoff ? (monthlySalary / 2) : monthlySalary;
 
         // 3. Perfect Attendance Bonus logic: ₱250 per cut-off
-        // If "Whole Month" is viewed, no absences across the month adds ₱500 (₱250 × 2)
         const baseBonusPerCutoff = 250;
         const attendanceBonus = (daysAbsent === 0) ? (isCutoff ? baseBonusPerCutoff : baseBonusPerCutoff * 2) : 0;
 
@@ -558,19 +1197,37 @@
         const totalOTPay = otHourlyRate * otHours;
         const totalAbsenceDeduction = dailyRate * daysAbsent;
 
-        // 5. Final Estimated Net Pay including the attendance bonus
-        const netPay = basePay - totalAbsenceDeduction + totalOTPay + attendanceBonus;
+        // 5. Calculate Gross Salary (salary before deductions)
+        const grossPay = basePay - totalAbsenceDeduction + totalOTPay + attendanceBonus;
 
-        // Render Rates
-        document.getElementById('dailyRate').innerText = formatCurrency(dailyRate);
-        document.getElementById('hourlyRate').innerText = formatCurrency(hourlyRate);
-        document.getElementById('otHourlyRate').innerText = formatCurrency(otHourlyRate);
+        // 6. Calculate Statutory Deductions proportional to the period selection
+        const divisor = isCutoff ? 2 : 1;
+        const sssDeduction = basePay * 0.025; // Flat 2.5% of period base salary
+        const pagibigDeduction = (monthlySalary * 0.02) / divisor;
+        const totalStatutory = sssDeduction + pagibigDeduction;
+
+        // 7. Calculate Estimated Net Take-home Pay
+        const takeHomePay = grossPay - totalStatutory;
+
+        // Save raw calculation floats globally to transfer to history
+        currentCalcData = {
+            type: isCutoff ? 'Cut-off' : 'Full Month',
+            otHours: otHours,
+            daysAbsent: daysAbsent,
+            grossPay: grossPay,
+            takeHomePay: takeHomePay
+        };
 
         // Render Breakdown
         document.getElementById('baseSalaryLabel').innerText = isCutoff ? 'Basic Pay (1/2 Month Cut-off):' : 'Basic Pay (Whole Month):';
         document.getElementById('baseSalaryValue').innerText = formatCurrency(basePay);
         document.getElementById('absenceValue').innerText = '-' + formatCurrency(totalAbsenceDeduction);
         document.getElementById('otValue').innerText = '+' + formatCurrency(totalOTPay);
+
+        // Render Statutory Deductions
+        document.getElementById('statutoryTotalValue').innerText = '-' + formatCurrency(totalStatutory);
+        document.getElementById('sssValue').innerText = '-' + formatCurrency(sssDeduction);
+        document.getElementById('pagibigValue').innerText = '-' + formatCurrency(pagibigDeduction);
 
         // Render Perfect Attendance Bonus Row
         const bonusRow = document.getElementById('bonusRow');
@@ -583,9 +1240,10 @@
             bonusValue.innerText = formatCurrency(0) + " (Lost due to absence)";
         }
 
-        // Render Total Pay
-        document.getElementById('netPayLabel').innerText = isCutoff ? 'Estimated Net Cut-off Pay' : 'Estimated Net Month Pay';
-        document.getElementById('totalOT').innerText = formatCurrency(netPay);
+        // Render Total Gross Salary and Net Take-home Salary
+        document.getElementById('grossSalary').innerText = formatCurrency(grossPay);
+        document.getElementById('netPayLabel').innerText = isCutoff ? 'Estimated Net Take-Home (One Cut-off)' : 'Estimated Net Take-Home (Whole Month)';
+        document.getElementById('totalOT').innerText = formatCurrency(takeHomePay);
 
         return true;
     }
@@ -594,31 +1252,52 @@
         return '₱' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-    function liveCalculate() {
-        const resultsSection = document.getElementById('resultsSection');
-        const success = performCalculation();
-        
-        if (success) {
-            resultsSection.style.display = 'block';
+    // Handles toggle logic for collapsible dropdown groups
+    function toggleDropdown(detailsId, arrowId) {
+        const content = document.getElementById(detailsId);
+        const arrow = document.getElementById(arrowId);
+        if (content.style.display === 'block') {
+            content.style.display = 'none';
+            arrow.classList.remove('open');
         } else {
-            resultsSection.style.display = 'none';
+            content.style.display = 'block';
+            arrow.classList.add('open');
         }
     }
 
+    // Collapses dropdown elements to a clean closed state
+    function collapseDropdowns() {
+        const statutoryDetails = document.getElementById('statutoryDetails');
+        const statutoryArrow = document.getElementById('statutoryArrow');
+        
+        if (statutoryDetails) statutoryDetails.style.display = 'none';
+        if (statutoryArrow) statutoryArrow.classList.remove('open');
+    }
+
+    // Handles Manual calculation trigger via Calculate button
     function triggerCalculate() {
         const success = performCalculation();
         if (!success) {
-            alert("Calculation error. Please ensure the page loaded correctly.");
+            alert("Calculation error. Please ensure the inputs are valid.");
         } else {
             document.getElementById('resultsSection').style.display = 'block';
         }
     }
 
+    // Immediately hides the results container when toggling view options
+    function hideResults() {
+        document.getElementById('resultsSection').style.display = 'none';
+        currentCalcData = null;
+        collapseDropdowns();
+    }
+
+    // Clears values and hides the results section on Reset
     function resetCalculator() {
         document.getElementById('otHours').value = '';
         document.getElementById('daysAbsent').value = '';
         document.getElementById('viewMonth').checked = true;
-        liveCalculate();
+        hideResults();
+        updateSyncBannerLabel();
     }
 
     // Payday calculations (5th and 20th of the month)
@@ -640,16 +1319,12 @@
 
         // Determine the pay periods
         if (date < 5) {
-            // Cycle: 20th of last month to 5th of this month
             prevPayday = new Date(year, month - 1, 20);
             nextPayday = new Date(year, month, 5);
         } else if (date > 5 && date < 20) {
-            // Cycle: 5th of this month to 20th of this month
             prevPayday = new Date(year, month, 5);
             nextPayday = new Date(year, month, 20);
         } else {
-            // Date > 20
-            // Cycle: 20th of this month to 5th of next month
             prevPayday = new Date(year, month, 20);
             nextPayday = new Date(year, month + 1, 5);
         }
@@ -670,7 +1345,6 @@
         if (percentage < 0) percentage = 0;
         if (percentage > 100) percentage = 100;
 
-        // Format date string for displaying the next target payday (e.g., "Aug 5")
         const formattedNextPayday = nextPayday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
         // Update UI
@@ -684,10 +1358,411 @@
         }
     }
 
+    // History log storage features
+    function saveCalculation() {
+        if (!currentCalcData) return;
+
+        // Calculate the last payday relative to today
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const date = now.getDate();
+
+        let lastPayday;
+        if (date >= 20) {
+            lastPayday = new Date(year, month, 20);
+        } else if (date >= 5) {
+            lastPayday = new Date(year, month, 5);
+        } else {
+            lastPayday = new Date(year, month - 1, 20);
+        }
+
+        const formattedPayday = lastPayday.toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric'
+        });
+
+        const record = {
+            id: Date.now(),
+            timestamp: formattedPayday, // Saves the actual day of the last payday
+            type: currentCalcData.type,
+            otHours: currentCalcData.otHours,
+            daysAbsent: currentCalcData.daysAbsent,
+            grossPay: currentCalcData.grossPay,
+            takeHomePay: currentCalcData.takeHomePay
+        };
+
+        let history = JSON.parse(localStorage.getItem('pay_calculator_history')) || [];
+        history.unshift(record); // Adds new entry to the top
+        localStorage.setItem('pay_calculator_history', JSON.stringify(history));
+
+        renderHistory();
+
+        // Visual feedback upon clicking save button
+        const saveBtn = document.getElementById('saveHistoryBtn');
+        const originalText = saveBtn.innerText;
+        saveBtn.innerText = "✓ Saved to History";
+        saveBtn.style.background = "linear-gradient(135deg, #059669 0%, #10b981 100%)";
+        setTimeout(() => {
+            saveBtn.innerText = originalText;
+            saveBtn.style.background = "";
+        }, 1500);
+    }
+
+    function renderHistory() {
+        const historyList = document.getElementById('historyList');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const metricsContainer = document.getElementById('historyMetrics');
+        const history = JSON.parse(localStorage.getItem('pay_calculator_history')) || [];
+
+        // Calculation variables for dynamic history metrics
+        let totalNet = 0;
+        let totalOT = 0;
+        let totalAbsent = 0;
+
+        if (history.length === 0) {
+            historyList.innerHTML = `<div class="no-history">No saved calculations found. Save a layout from the Calculator view.</div>`;
+            clearHistoryBtn.style.display = 'none';
+            metricsContainer.style.display = 'none';
+            return;
+        }
+
+        clearHistoryBtn.style.display = 'block';
+        metricsContainer.style.display = 'grid';
+
+        historyList.innerHTML = history.map(item => {
+            totalNet += item.takeHomePay;
+            totalOT += item.otHours;
+            totalAbsent += item.daysAbsent;
+
+            return `
+                <div class="history-item">
+                    <div class="history-details">
+                        <div class="history-meta">${item.timestamp} • ${item.type}</div>
+                        <div class="history-sub">OT: ${item.otHours}h | Absent: ${item.daysAbsent}d</div>
+                    </div>
+                    <div class="history-values">
+                        <div class="history-payout">
+                            <div class="history-net">${formatCurrency(item.takeHomePay)}</div>
+                            <div class="history-gross">Gross: ${formatCurrency(item.grossPay)}</div>
+                        </div>
+                        <button class="delete-item-btn" onclick="deleteHistoryItem(${item.id})" title="Delete entry">×</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Populate metrics header cards
+        document.getElementById('metricTotalNet').innerText = formatCurrency(totalNet);
+        document.getElementById('metricTotalOT').innerText = `${totalOT.toFixed(1)} hrs`;
+        document.getElementById('metricTotalAbsent').innerText = `${totalAbsent.toFixed(1)} days`;
+    }
+
+    function deleteHistoryItem(id) {
+        let history = JSON.parse(localStorage.getItem('pay_calculator_history')) || [];
+        history = history.filter(item => item.id !== id);
+        localStorage.setItem('pay_calculator_history', JSON.stringify(history));
+        renderHistory();
+    }
+
+    function clearAllHistory() {
+        if (confirm("Clear all saved calculation history? This action cannot be undone.")) {
+            localStorage.removeItem('pay_calculator_history');
+            renderHistory();
+        }
+    }
+
+    // ----------------------------------------------------
+    // ATTENDANCE TRACKER SYSTEM & LOGIC
+    // ----------------------------------------------------
+
+    // Start Real-Time Clock
+    function startLiveClock() {
+        if (clockTimer) clearInterval(clockTimer);
+        clockTimer = setInterval(() => {
+            const now = new Date();
+            document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+        }, 1000);
+    }
+
+    // Handle shift punch tracking
+    function initAttendanceUI() {
+        const activeShift = JSON.parse(localStorage.getItem('current_shift'));
+        const btnClockIn = document.getElementById('btnClockIn');
+        const btnClockOut = document.getElementById('btnClockOut');
+        const statusBadge = document.getElementById('attendanceStatus');
+
+        if (activeShift) {
+            btnClockIn.disabled = true;
+            btnClockOut.disabled = false;
+            
+            const clockInTime = new Date(activeShift.timeIn).toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            statusBadge.className = "status-badge active-shift";
+            statusBadge.innerText = `Active: Clocked in at ${clockInTime}`;
+        } else {
+            btnClockIn.disabled = false;
+            btnClockOut.disabled = true;
+            statusBadge.className = "status-badge";
+            statusBadge.innerText = "Not Clocked In";
+        }
+        
+        // Default manual shift date selector to today
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('manualDate').value = todayStr;
+
+        renderAttendanceLogs();
+    }
+
+    function clockIn() {
+        const shiftRecord = {
+            timeIn: new Date().toISOString()
+        };
+        localStorage.setItem('current_shift', JSON.stringify(shiftRecord));
+        initAttendanceUI();
+    }
+
+    function clockOut() {
+        const activeShift = JSON.parse(localStorage.getItem('current_shift'));
+        if (!activeShift) return;
+
+        const timeIn = new Date(activeShift.timeIn);
+        const timeOut = new Date();
+        const msElapsed = timeOut - timeIn;
+        let totalHours = msElapsed / (1000 * 60 * 60);
+
+        // Debug/Testing helper: If elapsed time is less than a minute, offer to log 8 hours instead of fractional zero
+        if (msElapsed < 60 * 1000) {
+            const simulateShift = confirm("Clock out elapsed under 1 minute. Would you like to record a standard 8-hour shift for simulator testing?");
+            if (simulateShift) {
+                totalHours = 8.0;
+            }
+        }
+
+        saveShiftRecord(timeIn.toISOString().split('T')[0], totalHours);
+        localStorage.removeItem('current_shift');
+        initAttendanceUI();
+    }
+
+    // Save calculation metrics with structural OT boundary values
+    function saveShiftRecord(dateStr, totalHours) {
+        totalHours = parseFloat(totalHours) || 0;
+        if (totalHours <= 0) return;
+
+        const standardHours = Math.min(8, totalHours);
+        const otHours = Math.max(0, totalHours - 8);
+
+        const newLog = {
+            id: Date.now(),
+            date: dateStr,
+            totalHours: totalHours,
+            standardHours: standardHours,
+            otHours: otHours
+        };
+
+        let logs = JSON.parse(localStorage.getItem('payroll_attendance_logs')) || [];
+        
+        // Ensure only one log entry exists per calendar day. Overwrite if repeated.
+        logs = logs.filter(item => item.date !== dateStr);
+        logs.unshift(newLog);
+
+        localStorage.setItem('payroll_attendance_logs', JSON.stringify(logs));
+        renderAttendanceLogs();
+        updateSyncBannerLabel();
+    }
+
+    function submitManualShift() {
+        const dateInput = document.getElementById('manualDate').value;
+        const hoursInput = parseFloat(document.getElementById('manualHours').value);
+
+        if (!dateInput) {
+            alert("Please choose a valid date.");
+            return;
+        }
+        if (isNaN(hoursInput) || hoursInput <= 0 || hoursInput > 24) {
+            alert("Please input working hours between 1 and 24.");
+            return;
+        }
+
+        saveShiftRecord(dateInput, hoursInput);
+        document.getElementById('manualHours').value = '';
+        alert("Shift attendance logged successfully.");
+    }
+
+    function renderAttendanceLogs() {
+        const listContainer = document.getElementById('attendanceList');
+        const logs = JSON.parse(localStorage.getItem('payroll_attendance_logs')) || [];
+
+        if (logs.length === 0) {
+            listContainer.innerHTML = `<div class="no-history">No shift records found. Clock in or log manual shifts above.</div>`;
+            return;
+        }
+
+        listContainer.innerHTML = logs.map(item => {
+            const formattedDate = new Date(item.date).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+
+            return `
+                <div class="history-item">
+                    <div class="history-details">
+                        <div class="history-meta" style="color: var(--text-main); font-weight: 800;">${formattedDate}</div>
+                        <div class="history-sub">Standard: ${item.standardHours.toFixed(1)}h | OT: ${item.otHours.toFixed(1)}h</div>
+                    </div>
+                    <div class="history-values">
+                        <div class="history-payout">
+                            <span class="status-badge completed-shift" style="margin-bottom: 0;">${item.totalHours.toFixed(1)} hrs total</span>
+                        </div>
+                        <button class="delete-item-btn" onclick="deleteAttendanceLog(${item.id})" title="Delete entry">×</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function deleteAttendanceLog(id) {
+        let logs = JSON.parse(localStorage.getItem('payroll_attendance_logs')) || [];
+        logs = logs.filter(item => item.id !== id);
+        localStorage.setItem('payroll_attendance_logs', JSON.stringify(logs));
+        renderAttendanceLogs();
+        updateSyncBannerLabel();
+    }
+
+    function clearAttendanceLogs() {
+        if (confirm("Clear all attendance tracking histories? This resets calculation sync states.")) {
+            localStorage.removeItem('payroll_attendance_logs');
+            renderAttendanceLogs();
+            updateSyncBannerLabel();
+        }
+    }
+
+    // ----------------------------------------------------
+    // INTEGRATION & SYNC UTILITIES
+    // ----------------------------------------------------
+
+    // Resolves log coverage values per Whole Month or Half-Month Cut-off
+    function getFilteredAttendanceStats() {
+        const isCutoff = document.getElementById('viewCutoff').checked;
+        const logs = JSON.parse(localStorage.getItem('payroll_attendance_logs')) || [];
+        
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth(); // 0-indexed month
+        const todayDate = now.getDate();
+
+        let startDate, endDate;
+        let expectedWorkdays = 26; // Whole Month standard
+
+        if (isCutoff) {
+            expectedWorkdays = 13; // Half-Month standard
+            // Determine active cutoff based on today's calendar date
+            if (todayDate <= 15) {
+                startDate = new Date(currentYear, currentMonth, 1);
+                endDate = new Date(currentYear, currentMonth, 15);
+            } else {
+                startDate = new Date(currentYear, currentMonth, 16);
+                endDate = new Date(currentYear, currentMonth + 1, 0); // End of current month
+            }
+        } else {
+            startDate = new Date(currentYear, currentMonth, 1);
+            endDate = new Date(currentYear, currentMonth + 1, 0);
+        }
+
+        // Clean bounds for standard comparisons
+        startDate.setHours(0,0,0,0);
+        endDate.setHours(23,59,59,999);
+
+        // Filter logged records
+        const activeLogs = logs.filter(item => {
+            const itemDate = new Date(item.date);
+            itemDate.setHours(12,0,0,0); // Avoid timezone shifts
+            return itemDate >= startDate && itemDate <= endDate;
+        });
+
+        // Compute outputs
+        let totalOTHours = 0;
+        const loggedDates = new Set();
+
+        activeLogs.forEach(log => {
+            totalOTHours += log.otHours;
+            loggedDates.add(log.date);
+        });
+
+        const activeDaysWorked = loggedDates.size;
+        const absences = Math.max(0, expectedWorkdays - activeDaysWorked);
+
+        return {
+            otHours: totalOTHours,
+            absences: absences,
+            daysWorked: activeDaysWorked,
+            expected: expectedWorkdays,
+            coverageStart: startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            coverageEnd: endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        };
+    }
+
+    function updateSyncBannerLabel() {
+        const stats = getFilteredAttendanceStats();
+        const bannerText = document.getElementById('syncStatusText');
+        
+        bannerText.innerText = `Range: ${stats.coverageStart} - ${stats.coverageEnd} | Found: ${stats.daysWorked} shift(s), ${stats.otHours.toFixed(1)}h OT.`;
+    }
+
+    function syncAttendanceToCalculator() {
+        const stats = getFilteredAttendanceStats();
+        
+        document.getElementById('otHours').value = stats.otHours.toFixed(1);
+        document.getElementById('daysAbsent').value = stats.absences.toFixed(1);
+
+        // Show result visualization on successful sync
+        const banner = document.getElementById('attendanceSyncBanner');
+        banner.style.backgroundColor = "rgba(16, 185, 129, 0.1)";
+        banner.style.borderColor = "var(--accent-success)";
+
+        setTimeout(() => {
+            banner.style.backgroundColor = "";
+            banner.style.borderColor = "";
+        }, 1500);
+
+        triggerCalculate();
+    }
+
+    // Schedules a browser page reload at exactly the next 12:00 AM (midnight)
+    function setupMidnightReload() {
+        const now = new Date();
+        const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+        const msToMidnight = midnight.getTime() - now.getTime();
+        
+        setTimeout(() => {
+            location.reload();
+        }, msToMidnight);
+    }
+
     // Automatically trigger on page load
     window.addEventListener('DOMContentLoaded', () => {
-        liveCalculate();
-        updatePaydayCountdown();
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+        if (isLoggedIn) {
+            document.getElementById('login-container').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            updatePaydayCountdown();
+            setupMidnightReload();
+            startLiveClock();
+            initAttendanceUI();
+            updateSyncBannerLabel();
+        } else {
+            document.getElementById('login-container').classList.remove('hidden');
+            document.getElementById('app-container').classList.add('hidden');
+        }
     });
 </script>
 
